@@ -7,7 +7,6 @@ public class Constants {
     public static final int QUESTION_POSITION = 0;
     public static final int LIST_ANSWERS_POSITION = 1;
     public static final int CORRECT_ANSWER_POSITION = 2;
-    public static final String TRY_AGAIN = "try.again";
     public static final String STUDENT_GOT_SCORE = "student.score";
     public static final String QUESTIONS_AND_ANSWERS = "questions.and.answers";
     public static final String STUDENT_PASSED = "student.passed";

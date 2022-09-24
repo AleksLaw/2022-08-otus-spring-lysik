@@ -5,5 +5,5 @@ import homework.domain.Question;
 import java.util.List;
 
 public interface ReaderFile {
-    List<Question> getQuestions();
+    List<Question> getQuestions(String filename);
 }

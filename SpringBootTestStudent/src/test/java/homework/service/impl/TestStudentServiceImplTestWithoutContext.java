@@ -40,7 +40,7 @@ class TestStudentServiceImplTestWithoutContext {
         appProperties.setNeedScoreForPass(2);
         appProperties.setLocale(new Locale("ru", "RU"));
         lenient().when(messageSource.getMessage(FILENAME, null, appProperties.getLocale())).thenReturn("Questions_ru.csv");
-        testStudentService = new TestStudentServiceImpl(readerFile, appProperties, ioService);
+        testStudentService = new TestStudentServiceImpl(readerFile, appProperties, ioService, messageSource);
         student = new Student("1", "1");
         testResult = new TestResult(student);
         ArrayList<String> wrongAnswer = new ArrayList<>();
@@ -55,16 +55,16 @@ class TestStudentServiceImplTestWithoutContext {
     @Test
     void startTest() {
         when(ioService.getStringFromConsole()).thenReturn("2");
-        when(readerFile.getQuestions()).thenReturn(questions);
+        when(readerFile.getQuestions("Questions_ru.csv")).thenReturn(questions);
         testStudentService.startTest();
-        verify(ioService, times(6)).outputString(anyString(), any());
+        verify(ioService, times(4)).outputString(anyString());
         verify(ioService, times(4)).getStringFromConsole();
     }
 
     @DisplayName("Проверка правильности тестовых результатов студента при правильных ответах")
     @Test
     void testingGoodAnswer() {
-        when(readerFile.getQuestions()).thenReturn(questions);
+        when(readerFile.getQuestions("Questions_ru.csv")).thenReturn(questions);
         when(ioService.getStringFromConsole()).thenReturn("2");
         TestResult testing = testStudentService.testing(ioService, student);
         assertTrue(testing.isResult());
@@ -75,7 +75,7 @@ class TestStudentServiceImplTestWithoutContext {
     @DisplayName("Проверка правильности тестовых результатов студента при неправильных ответах")
     @Test
     void testingWrongAnswer() {
-        when(readerFile.getQuestions()).thenReturn(questions);
+        when(readerFile.getQuestions("Questions_ru.csv")).thenReturn(questions);
         when(ioService.getStringFromConsole()).thenReturn("1");
         TestResult testing = testStudentService.testing(ioService, student);
         assertFalse(testing.isResult());
@@ -87,7 +87,7 @@ class TestStudentServiceImplTestWithoutContext {
     @Test
     void printResultTest() {
         testStudentService.printResultTest(testResult, ioService);
-        verify(ioService, times(3)).outputString(anyString(), any());
+        verify(ioService, times(5)).outputString(anyString());
 
     }
 

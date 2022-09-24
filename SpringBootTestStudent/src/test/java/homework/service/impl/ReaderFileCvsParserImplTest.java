@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import java.util.List;
 import java.util.Locale;
 
+import static homework.utils.Constants.FILENAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Сервис тестирования чтения файла с поднятием контекста")
@@ -26,7 +27,7 @@ class ReaderFileCvsParserImplTest {
     @DisplayName("количество вопросов")
     @Test
     void getQuestionsCount() {
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals(5, questions.size());
     }
 
@@ -34,8 +35,8 @@ class ReaderFileCvsParserImplTest {
     @Test
     void getQuestionTextEN() {
         appProperties.setLocale(new Locale("en", "EN"));
-        readerFileCvsParser = new ReaderFileCvsParserImpl(messageSource, appProperties);
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        readerFileCvsParser = new ReaderFileCvsParserImpl();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals("How many fingers do you have?", questions.get(0).getQuestionText());
     }
 
@@ -43,8 +44,8 @@ class ReaderFileCvsParserImplTest {
     @Test
     void getQuestionTextRU() {
         appProperties.setLocale(new Locale("ru", "RU"));
-        readerFileCvsParser = new ReaderFileCvsParserImpl(messageSource, appProperties);
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        readerFileCvsParser = new ReaderFileCvsParserImpl();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals("Сколько у тебя пальцев?", questions.get(0).getQuestionText());
     }
 
@@ -52,22 +53,22 @@ class ReaderFileCvsParserImplTest {
     @Test
     void getQuestionTextBY() {
         appProperties.setLocale(new Locale("be", "BY"));
-        readerFileCvsParser = new ReaderFileCvsParserImpl(messageSource, appProperties);
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        readerFileCvsParser = new ReaderFileCvsParserImpl();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals("Колькі ў цябе пальцаў?", questions.get(0).getQuestionText());
     }
 
     @DisplayName("количество ответов для вопроса")
     @Test
     void getAnswersCount() {
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals(5, questions.get(0).getListAnswers().size());
     }
 
     @DisplayName("текст ответов")
     @Test
     void getAnswersText() {
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals("1", questions.get(0).getListAnswers().get(0));
         assertEquals("20", questions.get(0).getListAnswers().get(1));
         assertEquals("3", questions.get(0).getListAnswers().get(2));
@@ -78,7 +79,7 @@ class ReaderFileCvsParserImplTest {
     @DisplayName("правльный ответ")
     @Test
     void getCorrectAnswer() {
-        List<Question> questions = readerFileCvsParser.getQuestions();
+        List<Question> questions = readerFileCvsParser.getQuestions(messageSource.getMessage(FILENAME, null, appProperties.getLocale()));
         assertEquals("20", questions.get(0).getCorrectAnswer());
     }
 

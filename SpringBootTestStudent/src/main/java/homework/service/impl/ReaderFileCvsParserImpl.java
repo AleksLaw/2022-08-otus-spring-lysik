@@ -1,12 +1,10 @@
 package homework.service.impl;
 
-import homework.config.AppProperties;
 import homework.domain.Question;
 import homework.service.ReaderFile;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -22,15 +20,8 @@ import static homework.utils.Constants.*;
 
 @Service
 public class ReaderFileCvsParserImpl implements ReaderFile {
-
-    private final String fileName;
-
-    public ReaderFileCvsParserImpl(MessageSource messageSource, AppProperties appProperties) {
-        this.fileName = messageSource.getMessage(FILENAME, null, appProperties.getLocale());
-    }
-
     @Override
-    public List<Question> getQuestions() {
+    public List<Question> getQuestions(String fileName) {
         try (InputStream stream = getStreamFromFile(fileName)) {
             assert stream != null;
             return parsingFile(stream);

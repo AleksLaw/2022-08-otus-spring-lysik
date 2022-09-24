@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,14 +40,14 @@ class TestStudentServiceImplTest {
     void startTest() {
         when(ioService.getStringFromConsole()).thenReturn("2");
         testStudentService.startTest();
-        verify(ioService, times(10)).outputString(anyString(), any());
-        verify(ioService, times(7)).outputString(anyString());
+        verify(ioService, times(17)).outputString(anyString());
         verify(ioService, times(7)).getStringFromConsole();
     }
 
-    @DisplayName("Проверка правильности тестовых результатов студента при правильных ответах")
+    @DisplayName("Проверка правильности тестовых результатов студента при правильных ответах RU")
     @Test
-    void testingGoodAnswer() {
+    void testingGoodAnswerRU() {
+        testStudentService.setLocale(new Locale("ru", "RU"));
         when(ioService.getStringFromConsole()).thenReturn("2");
         TestResult testing = testStudentService.testing(ioService, student);
         assertTrue(testing.isResult());
@@ -54,7 +55,35 @@ class TestStudentServiceImplTest {
         assertEquals(2, testing.getWrongAnswer().size());
         assertEquals("Сколько у тебя пальцев?", testing.getWrongAnswer().get(0));
         assertEquals("Сколько цветов у светофора?", testing.getWrongAnswer().get(1));
-        verify(ioService, times(5)).outputString(anyString(), any());
+        verify(ioService, times(5)).outputString(anyString());
+    }
+
+    @DisplayName("Проверка правильности тестовых результатов студента при правильных ответах BY")
+    @Test
+    void testingGoodAnswerBY() {
+        testStudentService.setLocale(new Locale("be", "BY"));
+        when(ioService.getStringFromConsole()).thenReturn("2");
+        TestResult testing = testStudentService.testing(ioService, student);
+        assertTrue(testing.isResult());
+        assertEquals(3, testing.getScore());
+        assertEquals(2, testing.getWrongAnswer().size());
+        assertEquals("Колькі ў цябе пальцаў?", testing.getWrongAnswer().get(0));
+        assertEquals("Колькі коляроў у святлафора?", testing.getWrongAnswer().get(1));
+        verify(ioService, times(5)).outputString(anyString());
+    }
+
+    @DisplayName("Проверка правильности тестовых результатов студента при правильных ответах BY")
+    @Test
+    void testingGoodAnswerEN() {
+        testStudentService.setLocale(new Locale("en", "EN"));
+        when(ioService.getStringFromConsole()).thenReturn("2");
+        TestResult testing = testStudentService.testing(ioService, student);
+        assertTrue(testing.isResult());
+        assertEquals(3, testing.getScore());
+        assertEquals(2, testing.getWrongAnswer().size());
+        assertEquals("How many fingers do you have?", testing.getWrongAnswer().get(0));
+        assertEquals("How many colors does a traffic light have?", testing.getWrongAnswer().get(1));
+        verify(ioService, times(5)).outputString(anyString());
     }
 
     @DisplayName("Проверка правильности тестовых результатов студента при неправильных ответах")
@@ -66,7 +95,7 @@ class TestStudentServiceImplTest {
         assertEquals(0, testing.getScore());
         assertEquals(5, testing.getWrongAnswer().size());
         assertEquals("Один плюс один?", testing.getWrongAnswer().get(4));
-        verify(ioService, times(5)).outputString(anyString(), any());
+        verify(ioService, times(5)).outputString(anyString());
 
     }
 
@@ -74,8 +103,7 @@ class TestStudentServiceImplTest {
     @Test
     void printResultTest() {
         testStudentService.printResultTest(testResult, ioService);
-        verify(ioService, times(3)).outputString(anyString(), any());
-        verify(ioService, times(5)).outputString(anyString());
+        verify(ioService, times(8)).outputString(anyString());
 
     }
 
@@ -86,8 +114,8 @@ class TestStudentServiceImplTest {
         Student student = testStudentService.getStudent(ioService);
         assertEquals("test", student.getName());
         assertEquals("test", student.getSurname());
-        verify(ioService, times(2)).outputString(anyString());
-        verify(ioService, times(2)).outputString(anyString(), any());
+        verify(ioService, times(4)).outputString(anyString());
+        verify(ioService, times(2)).getStringFromConsole();
 
     }
 }

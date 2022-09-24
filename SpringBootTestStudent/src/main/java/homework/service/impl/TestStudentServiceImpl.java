@@ -6,10 +6,12 @@ import homework.domain.Student;
 import homework.domain.TestResult;
 import homework.service.IOService;
 import homework.service.TestStudentService;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static homework.utils.Constants.*;
 import static java.lang.String.valueOf;
@@ -19,11 +21,19 @@ public class TestStudentServiceImpl implements TestStudentService {
     private final ReaderFileCvsParserImpl readerFile;
     private final int needScore;
     private final IOService ioService;
+    private final MessageSource messageSource;
+    private Locale locale;
 
-    public TestStudentServiceImpl(ReaderFileCvsParserImpl reader, AppProperties appProp, IOService ioService) {
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public TestStudentServiceImpl(ReaderFileCvsParserImpl reader, AppProperties appProp, IOService ioService, MessageSource messageSource) {
         this.readerFile = reader;
         this.needScore = appProp.getNeedScoreForPass();
         this.ioService = ioService;
+        this.messageSource = messageSource;
+        this.locale = appProp.getLocale();
     }
 
     @Override
@@ -41,7 +51,7 @@ public class TestStudentServiceImpl implements TestStudentService {
         TestResult testResult = new TestResult(student);
         int studentScore = 0;
         ArrayList<String> wrongAnswer = new ArrayList<>();
-        for (Question question : readerFile.getQuestions()) {
+        for (Question question : readerFile.getQuestions(messageSource.getMessage(FILENAME, null, locale))) {
             printQuestionWithAnswerOption(question, ioService);
             studentScore++;
             if (!ioService.getStringFromConsole().equals(question.getCorrectAnswer())) {
@@ -59,18 +69,24 @@ public class TestStudentServiceImpl implements TestStudentService {
         Student student = result.getStudent();
         printSeparator(ioService);
         ioService.outputString(
-                STUDENT_GOT_SCORE,
-                new String[]{student.toString(), valueOf(result.getScore()), valueOf(needScore)}
-        );
+                messageSource.getMessage(
+                        STUDENT_GOT_SCORE,
+                        new String[]{student.toString(), valueOf(result.getScore()), valueOf(needScore)},
+                        locale
+                ));
         ioService.outputString(
-                result.isResult()
-                        ? STUDENT_PASSED
-                        : STUDENT_FAIL,
-                new String[]{student.toString()}
-        );
+                messageSource.getMessage(
+                        result.isResult()
+                                ? STUDENT_PASSED
+                                : STUDENT_FAIL,
+                        new String[]{student.toString()},
+                        locale
+                ));
         printSeparator(ioService);
         if (result.getWrongAnswer().size() > 0) {
-            ioService.outputString(WRONG_ANSWERS_TO_QUESTIONS, null);
+            ioService.outputString(
+                    messageSource.getMessage(
+                            WRONG_ANSWERS_TO_QUESTIONS, null, locale));
             result.getWrongAnswer().forEach(ioService::outputString);
             printSeparator(ioService);
         }
@@ -78,9 +94,11 @@ public class TestStudentServiceImpl implements TestStudentService {
 
     public Student getStudent(IOService ioService) {
         printSeparator(ioService);
-        ioService.outputString(INPUT_NAME, null);
+        ioService.outputString(
+                messageSource.getMessage(INPUT_NAME, null, locale));
         String name = ioService.getStringFromConsole();
-        ioService.outputString(INPUT_SURNAME, null);
+        ioService.outputString(
+                messageSource.getMessage(INPUT_SURNAME, null, locale));
         String surname = ioService.getStringFromConsole();
         printSeparator(ioService);
         return new Student(name, surname);
@@ -92,8 +110,10 @@ public class TestStudentServiceImpl implements TestStudentService {
 
     private void printQuestionWithAnswerOption(Question question, IOService ioService) {
         ioService.outputString(
-                QUESTIONS_AND_ANSWERS,
-                new String[]{question.getQuestionText(), question.getListAnswers().toString()}
-        );
+                messageSource.getMessage(
+                        QUESTIONS_AND_ANSWERS,
+                        new String[]{question.getQuestionText(), question.getListAnswers().toString()},
+                        locale
+                ));
     }
 }
