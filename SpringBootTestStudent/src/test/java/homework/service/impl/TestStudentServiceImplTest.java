@@ -49,7 +49,7 @@ class TestStudentServiceImplTest {
     void testingGoodAnswerRU() {
         testStudentService.setLocale(new Locale("ru", "RU"));
         when(ioService.getStringFromConsole()).thenReturn("2");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertTrue(testing.isResult());
         assertEquals(3, testing.getScore());
         assertEquals(2, testing.getWrongAnswer().size());
@@ -63,7 +63,7 @@ class TestStudentServiceImplTest {
     void testingGoodAnswerBY() {
         testStudentService.setLocale(new Locale("be", "BY"));
         when(ioService.getStringFromConsole()).thenReturn("2");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertTrue(testing.isResult());
         assertEquals(3, testing.getScore());
         assertEquals(2, testing.getWrongAnswer().size());
@@ -77,7 +77,7 @@ class TestStudentServiceImplTest {
     void testingGoodAnswerEN() {
         testStudentService.setLocale(new Locale("en", "EN"));
         when(ioService.getStringFromConsole()).thenReturn("2");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertTrue(testing.isResult());
         assertEquals(3, testing.getScore());
         assertEquals(2, testing.getWrongAnswer().size());
@@ -90,7 +90,7 @@ class TestStudentServiceImplTest {
     @Test
     void testingWrongAnswer() {
         when(ioService.getStringFromConsole()).thenReturn("1");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertFalse(testing.isResult());
         assertEquals(0, testing.getScore());
         assertEquals(5, testing.getWrongAnswer().size());
@@ -102,7 +102,7 @@ class TestStudentServiceImplTest {
     @DisplayName("Вывод в консоль тестовых результатов студента")
     @Test
     void printResultTest() {
-        testStudentService.printResultTest(testResult, ioService);
+        testStudentService.printResultTest(testResult);
         verify(ioService, times(8)).outputString(anyString());
 
     }
@@ -111,7 +111,7 @@ class TestStudentServiceImplTest {
     @Test
     void getStudent() {
         when(ioService.getStringFromConsole()).thenReturn("test");
-        Student student = testStudentService.getStudent(ioService);
+        Student student = testStudentService.getStudent();
         assertEquals("test", student.getName());
         assertEquals("test", student.getSurname());
         verify(ioService, times(4)).outputString(anyString());

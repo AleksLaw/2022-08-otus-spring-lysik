@@ -66,7 +66,7 @@ class TestStudentServiceImplTestWithoutContext {
     void testingGoodAnswer() {
         when(readerFile.getQuestions("Questions_ru.csv")).thenReturn(questions);
         when(ioService.getStringFromConsole()).thenReturn("2");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertTrue(testing.isResult());
         assertEquals(2, testing.getScore());
         assertEquals(0, testing.getWrongAnswer().size());
@@ -77,7 +77,7 @@ class TestStudentServiceImplTestWithoutContext {
     void testingWrongAnswer() {
         when(readerFile.getQuestions("Questions_ru.csv")).thenReturn(questions);
         when(ioService.getStringFromConsole()).thenReturn("1");
-        TestResult testing = testStudentService.testing(ioService, student);
+        TestResult testing = testStudentService.testing(student);
         assertFalse(testing.isResult());
         assertEquals(0, testing.getScore());
         assertEquals(2, testing.getWrongAnswer().size());
@@ -86,7 +86,7 @@ class TestStudentServiceImplTestWithoutContext {
     @DisplayName("Вывод в консоль тестовых результатов студента")
     @Test
     void printResultTest() {
-        testStudentService.printResultTest(testResult, ioService);
+        testStudentService.printResultTest(testResult);
         verify(ioService, times(5)).outputString(anyString());
 
     }
@@ -95,7 +95,7 @@ class TestStudentServiceImplTestWithoutContext {
     @Test
     void getStudent() {
         when(ioService.getStringFromConsole()).thenReturn("test");
-        Student student = testStudentService.getStudent(ioService);
+        Student student = testStudentService.getStudent();
         assertEquals("test", student.getName());
         assertEquals("test", student.getSurname());
 

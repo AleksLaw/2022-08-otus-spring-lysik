@@ -9,7 +9,6 @@ import homework.service.TestStudentService;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,21 +37,18 @@ public class TestStudentServiceImpl implements TestStudentService {
 
     @Override
     public void startTest() {
-        try (ioService) {
-            Student student = getStudent(ioService);
-            TestResult testResult = testing(ioService, student);
-            printResultTest(testResult, ioService);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Student student = getStudent();
+        TestResult testResult = testing(student);
+        printResultTest(testResult);
     }
 
-    public TestResult testing(IOService ioService, Student student) {
+    @Override
+    public TestResult testing(Student student) {
         TestResult testResult = new TestResult(student);
         int studentScore = 0;
         ArrayList<String> wrongAnswer = new ArrayList<>();
         for (Question question : readerFile.getQuestions(messageSource.getMessage(FILENAME, null, locale))) {
-            printQuestionWithAnswerOption(question, ioService);
+            printQuestionWithAnswerOption(question);
             studentScore++;
             if (!ioService.getStringFromConsole().equals(question.getCorrectAnswer())) {
                 wrongAnswer.add(question.getQuestionText());
@@ -65,9 +61,10 @@ public class TestStudentServiceImpl implements TestStudentService {
         return testResult;
     }
 
-    public void printResultTest(TestResult result, IOService ioService) {
+    @Override
+    public void printResultTest(TestResult result) {
         Student student = result.getStudent();
-        printSeparator(ioService);
+        printSeparator();
         ioService.outputString(
                 messageSource.getMessage(
                         STUDENT_GOT_SCORE,
@@ -82,33 +79,32 @@ public class TestStudentServiceImpl implements TestStudentService {
                         new String[]{student.toString()},
                         locale
                 ));
-        printSeparator(ioService);
+        printSeparator();
         if (result.getWrongAnswer().size() > 0) {
             ioService.outputString(
                     messageSource.getMessage(
                             WRONG_ANSWERS_TO_QUESTIONS, null, locale));
             result.getWrongAnswer().forEach(ioService::outputString);
-            printSeparator(ioService);
+            printSeparator();
         }
     }
 
-    public Student getStudent(IOService ioService) {
-        printSeparator(ioService);
-        ioService.outputString(
-                messageSource.getMessage(INPUT_NAME, null, locale));
+    @Override
+    public Student getStudent() {
+        printSeparator();
+        ioService.outputString(messageSource.getMessage(INPUT_NAME, null, locale));
         String name = ioService.getStringFromConsole();
-        ioService.outputString(
-                messageSource.getMessage(INPUT_SURNAME, null, locale));
+        ioService.outputString(messageSource.getMessage(INPUT_SURNAME, null, locale));
         String surname = ioService.getStringFromConsole();
-        printSeparator(ioService);
+        printSeparator();
         return new Student(name, surname);
     }
 
-    private static void printSeparator(IOService ioService) {
+    private void printSeparator() {
         ioService.outputString(SEPARATOR);
     }
 
-    private void printQuestionWithAnswerOption(Question question, IOService ioService) {
+    private void printQuestionWithAnswerOption(Question question) {
         ioService.outputString(
                 messageSource.getMessage(
                         QUESTIONS_AND_ANSWERS,
