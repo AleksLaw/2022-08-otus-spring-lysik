@@ -1,0 +1,13 @@
+spring:
+  messages:
+    basename: "i18n/appmessage"
+    encoding: "UTF-8"
+
+properties:
+  needScoreForPass: 3
+  locale: be_BY
+  filename: "Questions_"
+  fileExtension: ".csv"
+
+AOP:
+  aspectUpperCase: false
