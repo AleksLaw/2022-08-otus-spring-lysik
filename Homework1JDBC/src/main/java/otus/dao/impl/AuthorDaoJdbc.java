@@ -21,7 +21,6 @@ import static java.util.Objects.isNull;
 public class AuthorDaoJdbc implements AuthorDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-
     @Override
     public long count() {
         Long authorCount = namedParameterJdbcTemplate.getJdbcOperations()
@@ -31,20 +30,20 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public long insert(Author author) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("name", author.getName());
-        parameterSource.addValue("surname", author.getSurname());
+        MapSqlParameterSource parSource = new MapSqlParameterSource();
+        parSource.addValue("name", author.getName());
+        parSource.addValue("surname", author.getSurname());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(
-                "insert into authors (name, surname ) values (:name, :surname )",
-                parameterSource, keyHolder, new String[]{"id"});
+                "insert into authors (name, surname) values (:name, :surname)",
+                parSource, keyHolder, new String[]{"id"});
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override
     public long update(Author author) {
         return namedParameterJdbcTemplate.update(
-                "update authors a set a.name = :name, a.surname =surname where a.id = :id",
+                "update authors a set a.name=:name, a.surname=:surname where a.id=:id",
                 Map.of("id", author.getId(), "name", author.getName(), "surname", author.getSurname())
         );
     }
@@ -52,7 +51,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public Author getById(long id) {
         return namedParameterJdbcTemplate.queryForObject(
-                "select id, name, surname from authors where id =  :id",
+                "select id, name, surname from authors where id=:id",
                 Map.of("id", id), new AuthorMapper());
     }
 
@@ -63,9 +62,8 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public int deleteById(long id) {
+    public long deleteById(long id) {
         return namedParameterJdbcTemplate.update(
-                "delete from authors where id =  :id", Map.of("id", id));
+                "delete from authors where id=:id", Map.of("id", id));
     }
-
 }

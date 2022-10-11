@@ -16,5 +16,5 @@ public interface AuthorDao {
 
     List<Author> getAll();
 
-    int deleteById(long id);
+    long deleteById(long id);
 }

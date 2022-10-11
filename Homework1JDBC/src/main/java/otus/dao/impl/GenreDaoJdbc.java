@@ -41,13 +41,15 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public long update(Genre genre) {
         return namedParameterJdbcTemplate.update(
-                "update genres g set g.name = :name where g.id = :id", Map.of("id", genre.getId(), "name", genre.getName()));
+                "update genres g set g.name=:name where g.id=:id",
+                Map.of("id", genre.getId(), "name", genre.getName()));
     }
 
     @Override
     public Genre getById(long id) {
         return namedParameterJdbcTemplate.queryForObject(
-                "select id, name from genres where id =  :id", Map.of("id", id), new GenreMapper());
+                "select id, name from genres where id=:id",
+                Map.of("id", id), new GenreMapper());
     }
 
     @Override
@@ -57,8 +59,8 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public int deleteById(long id) {
+    public long deleteById(long id) {
         return namedParameterJdbcTemplate.update(
-                "delete from genres where id =  :id", Map.of("id", id));
+                "delete from genres where id=:id", Map.of("id", id));
     }
 }

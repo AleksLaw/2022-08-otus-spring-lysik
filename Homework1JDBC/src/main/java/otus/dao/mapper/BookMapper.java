@@ -13,7 +13,7 @@ public class BookMapper implements RowMapper<Book> {
     public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Book(rs.getLong("b_id"), rs.getString("b_name"),
                 new Author(rs.getLong("a_id"), rs.getString("a_name"), rs.getString("surname")),
-                new Genre(rs.getLong("g_id"), rs.getString("g_name")));
-
+                new Genre(rs.getLong("g_id"), rs.getString("g_name"))
+        );
     }
 }

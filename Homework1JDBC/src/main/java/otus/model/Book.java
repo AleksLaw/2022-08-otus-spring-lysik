@@ -8,8 +8,16 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Book {
-    Long id;
-    final String name;
-    final Author author;
-    final Genre genre;
+    private Long id;
+    private final String name;
+    private final Author author;
+    private final Genre genre;
+
+    public String toString() {
+        return "Книга: id - " + this.getId()
+                + ", Название - " + this.getName() + "\n"
+                + this.getAuthor() + "\n"
+                + this.getGenre()
+                + "\n-------------";
+    }
 }

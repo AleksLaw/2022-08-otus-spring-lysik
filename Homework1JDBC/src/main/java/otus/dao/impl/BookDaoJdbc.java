@@ -36,7 +36,7 @@ public class BookDaoJdbc implements BookDao {
         parameterSource.addValue("genre_id", book.getGenre().getId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(
-                "insert into books (name, author_id, genre_id ) values (:name, :author_id, :genre_id )",
+                "insert into books (name, author_id, genre_id) values (:name, :author_id, :genre_id)",
                 parameterSource, keyHolder, new String[]{"id"});
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
@@ -44,31 +44,29 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public long update(Book book) {
         return namedParameterJdbcTemplate.update(
-                "update books b set b.name = :name, b.author =:author , b.genre= :genre where b.id =  :id",
-                Map.of("id", book.getId(), "name", book.getName(), "author", book.getAuthor(), "genre", book.getGenre()));
+                "update books set name=:name, author_id=:author_id, genre_id=:genre_id where id=:id",
+                Map.of("id", book.getId(), "name", book.getName(), "author_id", book.getAuthor().getId(), "genre_id", book.getGenre().getId()));
     }
 
     @Override
     public Book getById(long id) {
-        String sql = "select " +
-                "b.id as b_id, b.name as b_name, a.id as a_id, a.name as a_name, a.surname, g.id as g_id, g.name as g_name  " +
-                "from books b " +
-                "left join authors a on b.author_id = a.id " +
-                "left join genres g on b.genre_id = g.id " +
-                "where b.id =  :id";
-        List<Book> id1 = namedParameterJdbcTemplate.query(sql, Map.of("id", id), new BookMapper());
-        return id1.get(0);
+        String sql = "select b.id as b_id, b.name as b_name, a.id as a_id, a.name as a_name, a.surname, g.id as g_id, g.name as g_name from books b " +
+                "left join authors a on b.author_id=a.id " +
+                "left join genres g on b.genre_id=g.id where b.id=:id";
+        return namedParameterJdbcTemplate.queryForObject(sql, Map.of("id", id), new BookMapper());
     }
 
     @Override
     public List<Book> getAll() {
-        return namedParameterJdbcTemplate.getJdbcOperations().query(
-                "select id, name, author, genre from books", new BookMapper());
+        String sql = "select b.id as b_id, b.name as b_name, a.id as a_id, a.name as a_name, a.surname, g.id as g_id, g.name as g_name from books b " +
+                "left join authors a on b.author_id=a.id " +
+                "left join genres g on b.genre_id=g.id ";
+        return namedParameterJdbcTemplate.query(sql, new BookMapper());
     }
 
     @Override
-    public int deleteById(long id) {
+    public long deleteById(long id) {
         return namedParameterJdbcTemplate.update(
-                "delete from books where id =  :id", Map.of("id", id));
+                "delete from books where id=:id", Map.of("id", id));
     }
 }

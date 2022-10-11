@@ -9,6 +9,11 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Genre {
-    Long id;
-    final String name;
+    private Long id;
+    private final String name;
+
+    public String toString() {
+        return "Жанр:  id - " + this.getId() +
+                ", Вид - " + this.getName();
+    }
 }
