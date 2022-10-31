@@ -13,6 +13,7 @@ gb, GetBook: Получение книги
 ub, UpdateBook: Обновление книги
 db, DeleteBook: Удаление книги
 sb, SaveBook: Сохранение книги
+cb, GetComment: Получение комментариев книги
 
 Shell Command Comment
 sc, SaveComment: Сохранение коментария

@@ -1,7 +1,7 @@
 package otus.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import otus.dao.GenreDao;
 import otus.model.Genre;
 
@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class GenreDaoJpa implements GenreDao {
     @PersistenceContext
@@ -33,7 +33,9 @@ public class GenreDaoJpa implements GenreDao {
 
     @Override
     public Optional<Genre> getById(long id) {
-        return Optional.ofNullable(em.find(Genre.class, id));
+        return Optional.ofNullable(
+                em.find(Genre.class, id)
+        );
     }
 
     @Override
@@ -43,9 +45,7 @@ public class GenreDaoJpa implements GenreDao {
     }
 
     @Override
-    public long deleteById(long id) {
-        return em.createQuery("delete from Genre g where g.id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void deleteById(long id) {
+        getById(id).ifPresent(em::remove);
     }
 }

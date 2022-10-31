@@ -1,7 +1,7 @@
 package otus.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import otus.dao.BookDao;
 import otus.model.Book;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class BookDaoJpa implements BookDao {
 
@@ -36,9 +36,12 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Optional<Book> getById(long id) {
-        return Optional.ofNullable(
-                em.find(Book.class, id)
-        );
+        try {
+            em.getEntityManagerFactory().addNamedEntityGraph(FETCH.getKey(), em.getEntityGraph("book-graph"));
+            return Optional.ofNullable(em.find(Book.class, id));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -49,9 +52,7 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
-    public long deleteById(long id) {
-        return em.createQuery("delete from Book b where b.id=:id ")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void deleteById(long id) {
+        getById(id).ifPresent(em::remove);
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class AuthorServiceTest {
@@ -36,7 +36,7 @@ class AuthorServiceTest {
     void saveAuthor() {
         when(ioService.getString()).thenReturn("test");
         when(authorDAO.save(expected)).thenReturn(expected);
-        Author actual = authorService.saveAuthor();
+        Author actual = authorService.saveAuthor(expected.getName(), expected.getSurname());
         assertEquals(expected, actual);
     }
 
@@ -45,7 +45,7 @@ class AuthorServiceTest {
         expected.setId(1L);
         when(ioService.getLong()).thenReturn(1L);
         when(authorDAO.getById(1L)).thenReturn(Optional.of(expected));
-        Author actual = authorService.getAuthor();
+        Author actual = authorService.getAuthor(1L);
         assertEquals(expected, actual);
     }
 
@@ -64,17 +64,16 @@ class AuthorServiceTest {
         expected.setId(1L);
         when(authorDAO.update(expected)).thenReturn(expected);
         when(authorDAO.getById(1L)).thenReturn(Optional.of(expected));
-        Author author = authorService.updateAuthor();
+        Author author = authorService.updateAuthor(expected);
         assertEquals(expected, author);
     }
 
     @Test
     void deleteAuthor() {
         when(ioService.getLong()).thenReturn(1L);
-        when(authorDAO.deleteById(1L)).thenReturn(1L);
         expected.setId(1L);
         when(authorDAO.getById(1L)).thenReturn(Optional.of(expected));
-        long actual = authorService.deleteAuthor();
-        assertEquals(1, actual);
+        authorService.deleteAuthor(expected);
+        verify(authorDAO, times(1)).deleteById(1L);
     }
 }

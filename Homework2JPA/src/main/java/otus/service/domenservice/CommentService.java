@@ -1,19 +1,21 @@
 package otus.service.domenservice;
 
 
+import otus.model.Book;
 import otus.model.Comment;
 
 import java.util.List;
 
 public interface CommentService {
-    Comment saveComment();
 
-    Comment getCommentById();
+    Comment saveComment(String name, Book book);
 
-    List<Comment> getAllCommentByBookId();
+    Comment getComment(long id);
 
-    Comment updateComment();
+    List<Comment> getAllComment();
 
-    long deleteComment();
+    Comment updateComment(Comment comment);
+
+    void deleteComment(Comment comment);
 
 }

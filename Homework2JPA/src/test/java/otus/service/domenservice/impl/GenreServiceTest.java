@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class GenreServiceTest {
@@ -36,7 +36,7 @@ class GenreServiceTest {
     void saveGenre() {
         when(ioService.getString()).thenReturn("test");
         when(genreDAO.save(expected)).thenReturn(expected);
-        Genre actual = genreService.saveGenre();
+        Genre actual = genreService.saveGenre("test");
         assertEquals(expected, actual);
     }
 
@@ -45,7 +45,7 @@ class GenreServiceTest {
         expected.setId(1L);
         when(ioService.getLong()).thenReturn(1L);
         when(genreDAO.getById(1L)).thenReturn(Optional.of(expected));
-        Genre actual = genreService.getGenre();
+        Genre actual = genreService.getGenre(1L);
         assertEquals(expected, actual);
     }
 
@@ -64,18 +64,17 @@ class GenreServiceTest {
         expected.setId(1L);
         when(genreDAO.update(expected)).thenReturn(expected);
         when(genreDAO.getById(1L)).thenReturn(Optional.of(expected));
-        Genre actual = genreService.updateGenre();
+        Genre actual = genreService.updateGenre(expected);
         assertEquals(expected, actual);
     }
 
     @Test
     void deleteGenre() {
         when(ioService.getLong()).thenReturn(1L);
-        when(genreDAO.deleteById(1L)).thenReturn(1L);
         expected.setId(1L);
         when(genreDAO.getById(1L)).thenReturn(Optional.of(expected));
-        long actual = genreService.deleteGenre();
-        assertEquals(1, actual);
+        genreService.deleteGenre(expected);
+        verify(genreDAO, times(1)).deleteById(1L);
     }
 
 }

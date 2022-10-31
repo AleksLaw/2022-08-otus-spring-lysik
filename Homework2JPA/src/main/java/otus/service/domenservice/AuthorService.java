@@ -6,13 +6,14 @@ import otus.model.Author;
 import java.util.List;
 
 public interface AuthorService {
-    Author saveAuthor();
 
-    Author getAuthor();
+    Author saveAuthor(String name, String surname);
+
+    Author getAuthor(long id);
 
     List<Author> getAllAuthor();
 
-    Author updateAuthor();
+    Author updateAuthor(Author author);
 
-    long deleteAuthor();
+    void deleteAuthor(Author author);
 }

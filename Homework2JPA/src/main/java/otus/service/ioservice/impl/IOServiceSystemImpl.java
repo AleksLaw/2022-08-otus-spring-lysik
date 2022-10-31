@@ -30,8 +30,20 @@ public class IOServiceSystemImpl implements IOService {
     }
 
     @Override
+    public String getString(String s) {
+        outputString(s);
+        return getString();
+    }
+
+    @Override
     public Long getLong() {
         return scanner.nextLong();
+    }
+
+    @Override
+    public Long getLong(String s) {
+        outputString(s);
+        return getLong();
     }
 
     @Override

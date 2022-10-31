@@ -21,10 +21,10 @@ class CommentDaoJpaTest {
 
     @Test
     void save() {
-        Comment comment = new Comment("test", new Book(1L, "test", null, null));
-        long before = commentDaoJpa.getAllByBookId(1L).size();
+        Comment comment = new Comment("test", new Book(1L, "test", null, null, null));
+        long before = commentDaoJpa.getAll().size();
         Comment save = commentDaoJpa.save(comment);
-        long after = commentDaoJpa.getAllByBookId(1L).size();
+        long after = commentDaoJpa.getAll().size();
         assertThat(before).isLessThan(after);
         assertThat(save.getId()).isEqualTo(4);
         Optional<Comment> commentById = commentDaoJpa.getById(save.getId());
@@ -36,7 +36,7 @@ class CommentDaoJpaTest {
 
     @Test
     void update() {
-        Comment comment = new Comment(1L, "text", new Book(1L, "Capital", null, null));
+        Comment comment = new Comment(1L, "text", new Book(1L, "Capital", null, null, null));
         commentDaoJpa.update(comment);
         Optional<Comment> commentById = commentDaoJpa.getById(1L);
         Comment actual = commentById.orElse(null);
@@ -58,17 +58,15 @@ class CommentDaoJpaTest {
 
     @Test
     void getAllByBookId() {
-        List<Comment> allByBookId = commentDaoJpa.getAllByBookId(1L);
+        List<Comment> allByBookId = commentDaoJpa.getAll();
         assertThat(allByBookId.size()).isEqualTo(3);
         assertThat(allByBookId.get(0).getId()).isEqualTo(1L);
     }
 
     @Test
     void deleteById() {
-        long before = commentDaoJpa.getAllByBookId(1L).size();
-        long l = commentDaoJpa.deleteById(1L);
-        long after = commentDaoJpa.getAllByBookId(1L).size();
-        assertThat(before).isGreaterThan(after);
-        assertEquals(1L, l);
+        commentDaoJpa.deleteById(3L);
+        Optional<Comment> actual = commentDaoJpa.getById(3L);
+        assertEquals(Optional.empty(), actual);
     }
 }

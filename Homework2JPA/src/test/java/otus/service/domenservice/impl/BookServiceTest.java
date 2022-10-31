@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class BookServiceTest {
@@ -33,6 +33,7 @@ class BookServiceTest {
     private GenreService genreService;
     @Autowired
     private BookService bookService;
+
     private Author author;
     private Genre genre;
     private Book expected;
@@ -41,17 +42,17 @@ class BookServiceTest {
     public void setUp() {
         author = new Author(1L, "Karl", "Marks");
         genre = new Genre(1L, "Roman");
-        expected = new Book("test", author, genre);
+        expected = new Book("test", author, genre, null);
     }
 
     @Test
     void saveBook() {
         when(ioService.getString()).thenReturn("test");
         when(ioService.getLong()).thenReturn(1L);
-        when(authorService.getAuthor()).thenReturn(author);
-        when(genreService.getGenre()).thenReturn(genre);
+        when(authorService.getAuthor(1L)).thenReturn(author);
+        when(genreService.getGenre(1L)).thenReturn(genre);
         when(bookDao.save(expected)).thenReturn(expected);
-        Book actual = bookService.saveBook();
+        Book actual = bookService.saveBook(expected);
         assertEquals(expected, actual);
     }
 
@@ -59,7 +60,7 @@ class BookServiceTest {
     void getBook() {
         when(ioService.getLong()).thenReturn(1L);
         when(bookDao.getById(1L)).thenReturn(Optional.of(expected));
-        Book actual = bookService.getBook();
+        Book actual = bookService.getBook(1L);
         assertEquals(expected, actual);
     }
 
@@ -75,24 +76,22 @@ class BookServiceTest {
     void updateBook() {
         expected.setId(1L);
         when(ioService.getLong()).thenReturn(1L);
-        when(authorService.getAuthor()).thenReturn(author);
-        when(genreService.getGenre()).thenReturn(genre);
+        when(authorService.getAuthor(1L)).thenReturn(author);
+        when(genreService.getGenre(1L)).thenReturn(genre);
         when(ioService.getString()).thenReturn("test");
         when(ioService.getLong()).thenReturn(1L);
         when(bookDao.update(expected)).thenReturn(expected);
         when(bookDao.getById(1L)).thenReturn(Optional.of(expected));
-        Book actual = bookService.updateBook();
+        Book actual = bookService.updateBook(expected);
         assertEquals(expected, actual);
     }
 
     @Test
     void deleteBook() {
-        expected.setId(1L);
         when(ioService.getLong()).thenReturn(1L);
-        when(bookDao.deleteById(1L)).thenReturn(1L);
+        expected.setId(1L);
         when(bookDao.getById(1L)).thenReturn(Optional.of(expected));
-        long actual = bookService.deleteBook();
-        assertEquals(1, actual);
+        bookService.deleteBook(expected);
+        verify(bookDao, times(1)).deleteById(1L);
     }
-
 }

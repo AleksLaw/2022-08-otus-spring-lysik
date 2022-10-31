@@ -5,14 +5,14 @@ import otus.model.Book;
 import java.util.List;
 
 public interface BookService {
-    Book saveBook();
 
-    Book getBook();
+    Book saveBook(Book book);
+
+    Book getBook(long id);
 
     List<Book> getAllBook();
 
-    Book updateBook();
+    Book updateBook(Book book);
 
-    long deleteBook();
-
+    void deleteBook(Book book);
 }

@@ -13,7 +13,7 @@ public interface CommentDao {
 
     Optional<Comment> getById(long id);
 
-    List<Comment> getAllByBookId(long id);
+    List<Comment> getAll();
 
-    long deleteById(long id);
+    void deleteById(long id);
 }

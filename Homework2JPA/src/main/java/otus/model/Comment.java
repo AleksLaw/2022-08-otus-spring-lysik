@@ -11,24 +11,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Table(name = "comments")
-@NamedEntityGraph(name = "commentGraph",
-        attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "bookGraph")},
-        subgraphs = {
-                @NamedSubgraph(name = "bookGraph",
-                        attributeNodes = {
-                                @NamedAttributeNode(value = "id"),
-                                @NamedAttributeNode(value = "name")
-                        })
-        })
+@NamedEntityGraph(name = "comment-graph",
+        attributeNodes = {@NamedAttributeNode("book")})
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "comment_text")
     private String text;
-    @JoinColumn(name = "book_id")
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
+
+    @ManyToOne(targetEntity = Book.class)
     private Book book;
 
     public Comment(String text, Book book) {
@@ -40,7 +34,6 @@ public class Comment {
         return "Комментарий: id - " + this.getId()
                 + " " + this.getText()
                 + ", К книге - " + this.book.getName()
-                + " с id - " + this.book.getId()
                 ;
     }
 }

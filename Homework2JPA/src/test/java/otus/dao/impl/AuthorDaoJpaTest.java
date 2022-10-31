@@ -64,9 +64,10 @@ class AuthorDaoJpaTest {
     @Test
     void deleteById() {
         long before = authorDaoJpa.getAll().size();
-        long l = authorDaoJpa.deleteById(3L);
+        authorDaoJpa.deleteById(3L);
         long after = authorDaoJpa.getAll().size();
         assertThat(before).isGreaterThan(after);
-        assertEquals(1L, l);
+        Optional<Author> actual = authorDaoJpa.getById(3L);
+        assertEquals(Optional.empty(), actual);
     }
 }

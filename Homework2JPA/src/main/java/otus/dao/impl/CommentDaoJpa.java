@@ -35,21 +35,23 @@ public class CommentDaoJpa implements CommentDao {
 
     @Override
     public Optional<Comment> getById(long id) {
-        return Optional.ofNullable(em.find(Comment.class, id));
+        try {
+            em.getEntityManagerFactory().addNamedEntityGraph(FETCH.getKey(), em.getEntityGraph("comment-graph"));
+            return Optional.ofNullable(em.find(Comment.class, id));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public List<Comment> getAllByBookId(long id) {
-        return em.createQuery("SELECT c FROM Comment c where c.book.id=:id", Comment.class)
-                .setParameter("id", id)
-                .setHint(FETCH.getKey(), em.getEntityGraph("commentGraph"))
+    public List<Comment> getAll() {
+        return em.createQuery("SELECT c FROM Comment c", Comment.class)
+                .setHint(FETCH.getKey(), em.getEntityGraph("comment-graph"))
                 .getResultList();
     }
 
     @Override
-    public long deleteById(long id) {
-        return em.createQuery("delete from Comment c where c.id=:id ")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void deleteById(long id) {
+        getById(id).ifPresent(em::remove);
     }
 }

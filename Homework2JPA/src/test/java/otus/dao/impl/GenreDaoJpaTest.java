@@ -64,9 +64,10 @@ class GenreDaoJpaTest {
     @Test
     void deleteById() {
         long before = genreDaoJpa.getAll().size();
-        long l = genreDaoJpa.deleteById(3L);
+        genreDaoJpa.deleteById(3L);
         long after = genreDaoJpa.getAll().size();
         assertThat(before).isGreaterThan(after);
-        assertEquals(1L, l);
+        Optional<Genre> actual = genreDaoJpa.getById(3L);
+        assertEquals(Optional.empty(), actual);
     }
 }

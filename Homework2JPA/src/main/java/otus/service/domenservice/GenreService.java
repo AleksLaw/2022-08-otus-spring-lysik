@@ -6,13 +6,14 @@ import otus.model.Genre;
 import java.util.List;
 
 public interface GenreService {
-    Genre saveGenre();
 
-    Genre getGenre();
+    Genre saveGenre(String name);
+
+    Genre getGenre(long id);
 
     List<Genre> getAllGenre();
 
-    Genre updateGenre();
+    Genre updateGenre(Genre genre);
 
-    long deleteGenre();
+    void deleteGenre(Genre genre);
 }

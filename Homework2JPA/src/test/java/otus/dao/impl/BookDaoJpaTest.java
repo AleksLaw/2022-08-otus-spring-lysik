@@ -26,7 +26,8 @@ class BookDaoJpaTest {
     void insert() {
         Book book = new Book("test",
                 new Author("Karl", "Marks"),
-                new Genre("Roman"));
+                new Genre("Roman"),
+                null);
         Book save = bookDaoJpa.save(book);
         Optional<Book> bookById = bookDaoJpa.getById(save.getId());
         Book actual = bookById.orElse(null);
@@ -41,7 +42,8 @@ class BookDaoJpaTest {
     void update() {
         Book book = new Book(2L, "test",
                 new Author(1L, "Karl", "Marks"),
-                new Genre(1L, "Roman"));
+                new Genre(1L, "Roman"),
+                null);
         bookDaoJpa.update(book);
         Optional<Book> bookById = bookDaoJpa.getById(2L);
         Book actual = bookById.orElse(null);
@@ -68,10 +70,10 @@ class BookDaoJpaTest {
     @Test
     void deleteById() {
         long before = bookDaoJpa.getAll().size();
-        long l = bookDaoJpa.deleteById(2L);
+        bookDaoJpa.deleteById(2L);
         long after = bookDaoJpa.getAll().size();
         assertThat(before).isGreaterThan(after);
-        assertEquals(Optional.empty(), bookDaoJpa.getById(3L));
-        assertEquals(1L, l);
+        Optional<Book> actual = bookDaoJpa.getById(2L);
+        assertEquals(Optional.empty(), actual);
     }
 }
