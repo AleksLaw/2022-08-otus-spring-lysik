@@ -38,7 +38,7 @@ public class ShellCommandComment {
         }
     }
 
-    @ShellMethod(value = "Получение всех коментариев для книги", key = {"ac", "AllCommentBook"})
+    @ShellMethod(value = "Получение всех коментариев", key = {"ac", "AllComments"})
     public void getAllComments() {
         commentService.getAllComment().forEach(comment -> ioService.outputString(comment.toString()));
     }
