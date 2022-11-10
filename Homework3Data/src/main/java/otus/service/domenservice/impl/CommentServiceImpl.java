@@ -2,7 +2,6 @@ package otus.service.domenservice.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import otus.dao.CommentDao;
 import otus.model.Book;
 import otus.model.Comment;
@@ -17,7 +16,6 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDAO;
 
     @Override
-    @Transactional
     public Comment saveComment(String name, Book book) {
         return commentDAO.save(new Comment(name, book));
     }
@@ -33,13 +31,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
     public Comment updateComment(Comment comment) {
         return commentDAO.save(comment);
     }
 
     @Override
-    @Transactional
     public void deleteComment(Comment comment) {
         commentDAO.deleteById(comment.getId());
     }

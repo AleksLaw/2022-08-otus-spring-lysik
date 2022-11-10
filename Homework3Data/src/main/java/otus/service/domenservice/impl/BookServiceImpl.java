@@ -2,7 +2,6 @@ package otus.service.domenservice.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import otus.dao.BookDao;
 import otus.model.Book;
 import otus.service.domenservice.BookService;
@@ -16,7 +15,6 @@ public class BookServiceImpl implements BookService {
     private final BookDao bookDAO;
 
     @Override
-    @Transactional
     public Book saveBook(Book book) {
         return bookDAO.save(book);
     }
@@ -32,12 +30,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public Book updateBook(Book book) {
         return bookDAO.save(book);
     }
 
-    @Transactional
     @Override
     public void deleteBook(Book book) {
         bookDAO.deleteById(book.getId());
