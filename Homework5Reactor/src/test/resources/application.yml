@@ -1,0 +1,15 @@
+spring:
+  mongodb:
+    embedded:
+      version: "5.0.0"
+
+mongock:
+  runner-type: "InitializingBean"
+  logging:
+    config: classpath:logback.xml
+  change-logs-scan-package:
+    - otus.controller.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
