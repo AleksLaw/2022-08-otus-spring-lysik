@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .books tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .books td:last-child, td:first-child {
+            width: 50px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h3>Books:</h3>
+<a href="bookSave.html" th:href="@{/book/save}">
+    <button type="button" th:text="New_Book"></button>
+</a>
+<a href="bookSave.html" th:href="@{/author/all}">
+    <button type="button" th:text="Author"></button>
+</a>
+<a href="bookSave.html" th:href="@{/genre/all}">
+    <button type="button" th:text="Genre"></button>
+</a>
+<a href="bookSave.html" th:href="@{/comment/all}">
+    <button type="button" th:text="Commens"></button>
+</a>
+<br>
+<br>
+<br>
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Comments</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}">1</td>
+        <td th:text="${book.name}">John</td>
+        <td th:text="${book.author}">Doe</td>
+        <td th:text="${book.genre}">Doe</td>
+        <td>
+            <a th:href="@{/book/comments(id=${book.id})}" th:method="POST" href="bookComment.html">Get</a>
+        </td>
+        <td>
+            <a th:href="@{/book/edit(id=${book.id})}" th:method="POST" href="bookEdit.html">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/book/delete(id=${book.id})}" th:method="POST" href="bookDelete.html">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Save comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input {
+            width: 765px
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<form id="commentSave-form" th:action="@{save}" th:method="POST" th:object="${comment}">
+    <h3>Comment Save:</h3>
+
+    <div class="row">
+        <label for="comment-name-input">Text:</label>
+        <input id="comment-name-input" name="text" type="text"/>
+
+    </div>
+    <div class="row">
+        <label for="comment-books">Book:</label>
+        <select class="form-control" id="comment-books" name="book">
+            <option value="">Select book</option>
+            <option th:each="book : ${books}"
+                    th:value="${book.id}"
+                    th:text="${book}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="Save">Save</button>
+        <a href="commentList.html" th:href="@{all}">
+            <button type="button" th:text="Cancel">Cancel</button>
+        </a>
+    </div>
+</form>
+</body>
+</html>
