@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all comments for book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+
+        span {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .comments {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .comments tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+    </style>
+
+</head>
+<body>
+
+<h3>Comments:</h3>
+<a href="bookSave.html" th:href="@{/book/all}">
+    <button type="button" th:text="Previos"></button>
+</a>
+<br>
+<br>
+<span th:text=" ${book}"></span>
+<br>
+<br>
+
+<table class="comments">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.id}">1</td>
+        <td th:text="${comment.text}">John</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
