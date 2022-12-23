@@ -1,6 +1,9 @@
 package otus.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import otus.dao.BookDao;
 import otus.model.Book;
@@ -13,10 +16,15 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDAO;
+    private final PermissionService permissionService;
 
     @Override
     public Book saveBook(Book book) {
-        return bookDAO.save(book);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Book save = bookDAO.save(book);
+        //сделал чтобы видел только тот кто создал
+        permissionService.addPermissionForUser(save, BasePermission.READ, authentication.getName());
+        return save;
     }
 
     @Override
