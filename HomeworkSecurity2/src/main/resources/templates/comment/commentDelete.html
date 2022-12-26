@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Delete comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<form id="commentDelete-form" th:action="@{/comment/delete(id=${comment.id})}" th:method="POST" th:object="${comment}">
+    <h3>Comment Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" style="width:600px" readonly="readonly" th:value="*{id}"/>
+    </div>
+
+    <div class="row">
+        <label for="comment-name-input">Text:</label>
+        <input id="comment-name-input" style="width:600px" name="text" type="text" readonly="readonly"
+               th:value="*{text}"/>
+    </div>
+
+    <div class="row">
+        <label for="comment-surname-input">Book:</label>
+        <input id="comment-surname-input" style="width:600px" name="surname" type="text" readonly="readonly"
+               th:value="*{book}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="Delete">Delete</button>
+
+        <a href="commentList.html" th:href="@{/comment/all}">
+            <button type="button" th:text="Cancel">Cancel</button>
+        </a>
+    </div>
+</form>
+</body>
+</html>
