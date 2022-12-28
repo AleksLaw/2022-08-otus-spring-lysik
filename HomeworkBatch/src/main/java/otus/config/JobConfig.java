@@ -17,7 +17,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import otus.model.*;
+import otus.model.h2.AuthorH2;
+import otus.model.h2.BookH2;
+import otus.model.h2.CommentH2;
+import otus.model.h2.GenreH2;
+import otus.model.mongo.Author;
+import otus.model.mongo.Book;
+import otus.model.mongo.Comment;
+import otus.model.mongo.Genre;
 import otus.service.MigrationService;
 
 import javax.persistence.EntityManagerFactory;

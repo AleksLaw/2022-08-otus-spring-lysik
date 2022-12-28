@@ -1,4 +1,4 @@
-package otus.model;
+package otus.model.h2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +15,13 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comments")
-public class CommentH2 {
+@Table(name = "authors")
+public class AuthorH2 {
+
     @Id
     private Long id;
-    @Column(name = "comment_text")
-    private String text;
-    @Column(name = "book_id")
-    private Long book;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "surname", nullable = false)
+    private String surname;
 }

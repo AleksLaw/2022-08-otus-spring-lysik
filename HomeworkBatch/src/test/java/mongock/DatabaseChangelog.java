@@ -3,14 +3,14 @@ package mongock;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
-import otus.dao.AuthorDao;
-import otus.dao.BookDao;
-import otus.dao.CommentDao;
-import otus.dao.GenreDao;
-import otus.model.Author;
-import otus.model.Book;
-import otus.model.Comment;
-import otus.model.Genre;
+import otus.dao.mongo.AuthorDao;
+import otus.dao.mongo.BookDao;
+import otus.dao.mongo.CommentDao;
+import otus.dao.mongo.GenreDao;
+import otus.model.mongo.Author;
+import otus.model.mongo.Book;
+import otus.model.mongo.Comment;
+import otus.model.mongo.Genre;
 
 import java.util.List;
 

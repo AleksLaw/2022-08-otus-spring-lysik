@@ -1,4 +1,4 @@
-package otus.model;
+package otus.model.h2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

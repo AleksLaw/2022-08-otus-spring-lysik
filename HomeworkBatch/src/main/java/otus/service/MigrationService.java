@@ -1,7 +1,14 @@
 package otus.service;
 
 import org.springframework.stereotype.Service;
-import otus.model.*;
+import otus.model.h2.AuthorH2;
+import otus.model.h2.BookH2;
+import otus.model.h2.CommentH2;
+import otus.model.h2.GenreH2;
+import otus.model.mongo.Author;
+import otus.model.mongo.Book;
+import otus.model.mongo.Comment;
+import otus.model.mongo.Genre;
 
 @Service
 public class MigrationService {
