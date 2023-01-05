@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit genre</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<form id="genreEdit-form" th:action="@{/genre/edit(id=${genre.id})}" th:method="POST" th:object="${genre}">
+    <h3>Genre Edit:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="*{id}"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-name-input">Name:</label>
+        <input id="genre-name-input" name="name" type="text" th:value="*{name}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="Save">Save</button>
+        <a href="genreList.html" th:href="@{/genre/all}">
+            <button type="button" th:text="Cancel">Cancel</button>
+        </a>
+    </div>
+</form>
+</body>
+</html>
