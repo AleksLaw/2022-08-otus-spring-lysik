@@ -28,7 +28,7 @@ VALUES (1, 1, 'u'),
        (3, 1, 'k');
 
 INSERT INTO ACL_CLASS (ID, CLASS)
-VALUES (1, 'otus.model.Book');
+VALUES (1, 'otus.model.mongo.Book');
 
 INSERT INTO ACL_OBJECT_IDENTITY (ID, OBJECT_ID_CLASS, OBJECT_ID_IDENTITY, PARENT_OBJECT,
                                  OWNER_SID, ENTRIES_INHERITING)
