@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Save genre</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<form id="genreSave-form" th:action="@{save}" th:method="POST" th:object="${genre}">
+    <h3>Genre Save:</h3>
+
+    <div class="row">
+        <label for="genre-name-input">Name:</label>
+        <input id="genre-name-input" name="name" type="text"/>
+    </div>
+
+
+    <div class="row">
+        <button type="submit" th:text="Save">Save</button>
+        <a href="genreList.html" th:href="@{all}">
+            <button type="button" th:text="Cancel">Cancel</button>
+        </a>
+    </div>
+</form>
+</body>
+</html>
