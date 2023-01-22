@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    # Эти свойства будут перегружены свойствами в docker-compose.yml
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/db
+    username: postgres
+    password: postgres
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, logfile
+  endpoint:
+    health:
+      show-details: always
+logging:
+  file:
+    name: ./logs/log-file.log

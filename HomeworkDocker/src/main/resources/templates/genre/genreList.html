@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all genres</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .genres {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .genres tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .genres td:last-child, td:first-child {
+            width: 50px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h3>Genres:</h3>
+<a href="genreSave.html" th:href="@{/genre/save}">
+    <button type="button" th:text="New_Genre"></button>
+</a>
+<a href="bookSave.html" th:href="@{/book/all}">
+    <button type="button" th:text="Books"></button>
+</a>
+<br>
+<br>
+<br>
+<table class="genres">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="genre : ${genres}">
+        <td th:text="${genre.id}">1</td>
+        <td th:text="${genre.name}">John</td>
+        <td>
+            <a th:href="@{/genre/edit(id=${genre.id})}" th:method="POST" href="genreEdit.html">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/genre/delete(id=${genre.id})}" th:method="POST" href="genreDelete.html">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
